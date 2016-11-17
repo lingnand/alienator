@@ -4,11 +4,9 @@ module Main
     )
   where
 
-import Control.Monad.Trans
-import Reflex.Cocos2d
+import qualified Alienator.Main as A
 
 runAlienator :: IO ()
-runAlienator = mainScene $ do
-      liftIO $ putStrLn "Running."
+runAlienator = A.main
 
 foreign export ccall runAlienator :: IO ()
