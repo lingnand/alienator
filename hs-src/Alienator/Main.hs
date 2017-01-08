@@ -49,28 +49,22 @@ main = mainScene $ do
     void $ runAccStateT ?? StartScene $ do
       vDyn <- watches $ \case
         StartScene -> do
-          l <- label [ position       := P halfsize
-                     , text           := "Start"
-                     , systemFontSize := 20
-                     ]
-          sz <- get l contentSize
-          liftIO $ putStrLn $ "got size of label " ++ show sz
-          let (wid, height) = unr2 sz
-              bbox = B.fromPoints $ rect wid height & translate halfsize
-              touched = ffilter (B.contains bbox . (^.touchLocation)) (touchEs^.touchBegan)
-          adjust $ const GamePlayScene <$ touched
+          (_, clicked) <- button
+            [ titleText       := "Start"
+            , titleFontSize   := 20
+            , positionPercent := pure 0.5
+            ]
+          adjust $ const GamePlayScene <$ clicked
         GamePlayScene -> do
           liftIO $ putStrLn "playing game!"
           overE <- flip evalAccStateT (initGamePlaySceneState winSize) $ do
             gamePlayScene winSize sp steps collisionsE keysDyn
           adjust $ const GameOverScene <$ overE
         GameOverScene -> do
-          l <- label [ text           := "Game Over"
-                     , systemFontSize := 50
-                     , position       := 0 .+^ winSize/2
-                     ]
-          sz <- get l contentSize
-          let bbox = B.fromPoints $ uncurry rect (unr2 sz) # translate halfsize
-              touched = ffilter (B.contains bbox . (^.touchLocation)) (touchEs^.touchBegan)
-          adjust $ const StartScene <$ touched
+          (_, clicked) <- button
+            [ titleText       := "Game Over"
+            , titleFontSize   := 50
+            , positionPercent := pure 0.5
+            ]
+          adjust $ const StartScene <$ clicked
       node [] -<< vDyn

@@ -150,10 +150,10 @@ instance HasSprName (PhysicsSpriteState ac_a4JH ct_a4JI) String where
                 x1_aafa x2_aafb x3_aafc x4_aafd y1_aafg x6_aaff)
         (f_aaf9 x5_aafe)
 
-physicsSprite :: ( NodeGraph t m, Maskable a, Eq a
+physicsSprite :: ( NodeBuilder t host m, Maskable a, Eq a
                  , IsActuator ac, Eq ac
-                 , HasROPositionAttrib ac (HostFrame t)
-                 , HasROAngleAttrib ac (HostFrame t) )
+                 , HasROPositionAttrib ac host
+                 , HasROAngleAttrib ac host )
               => Space a -- space
               -> Event t SpaceStep
               -> EventSelector t (Const2 (Body a) (ShapeAttributes a))
