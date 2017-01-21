@@ -25,13 +25,14 @@ data Scene = StartScene | GamePlayScene | GameOverScene deriving (Show, Read, Eq
 main :: IO ()
 main = mainScene $ do
     winSize <- view windowSize
+    let midPoint = P (winSize/2)
     keysDyn <- getKeyboardEvents >>= accumKeysDown
 
     (sp, steps) <- space [ iterations := 2 ]
     collisionEvts <- getCollisionEvents sp
     let collisionsE = fanCollisionsByBody (collisionEvts^.collisionBegan)
     -- walls
-    wb <- body sp [ position := P (winSize/2) ]
+    wb <- body sp [ position := midPoint ]
     let rectPts = uncurry rect $ unr2 (winSize + 100)
     forM_ (zip rectPts $ tail $ cycle rectPts) $ \(a, b) ->
       void $ shape sp wb (LineSegment a b 100)
@@ -44,7 +45,7 @@ main = mainScene $ do
           (_, clicked) <- button
             [ titleText       := "Start"
             , titleFontSize   := 20
-            , positionPercent := pure 0.5
+            , position        := midPoint
             ]
           adjust $ const GamePlayScene <$ clicked
         GamePlayScene -> do
@@ -56,6 +57,6 @@ main = mainScene $ do
           (_, clicked) <- button
             [ titleText       := "Game Over"
             , titleFontSize   := 50
-            , positionPercent := pure 0.5
+            , position        := midPoint
             ]
           adjust $ const StartScene <$ clicked

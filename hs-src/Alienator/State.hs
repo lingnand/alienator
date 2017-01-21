@@ -84,7 +84,7 @@ data GamePlaySceneState m = GamePlaySceneState
       _bulletPool :: P.Pool (BulletState m)
     , _playerShip :: PlayerShipState
     , _enemyShipPool :: P.Pool (PSpriteState' VelActuator)
-    }
+    } deriving (Show)
 bulletPool ::
   forall m_a4Tx.
   Lens' (GamePlaySceneState m_a4Tx) (P.Pool (BulletState m_a4Tx))
