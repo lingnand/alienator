@@ -34,6 +34,7 @@ library
                      , reflex-cocos2d
                      , diagrams-lib
                      , linear
+                     , random
                      , MonadRandom
   ghc-options:         -Wall -threaded -stubdir Classes -o Alienator -staticlib -pgmlibtool libtool-quiet
                        -fno-warn-name-shadowing

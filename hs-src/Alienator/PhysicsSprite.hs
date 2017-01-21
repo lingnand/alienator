@@ -1,3 +1,4 @@
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -21,7 +22,6 @@ import Data.Functor.Misc
 import Control.Lens
 import Control.Monad
 import Reflex
-import Reflex.Host.Class
 import Reflex.State
 import Reflex.Cocos2d
 
@@ -150,14 +150,14 @@ instance HasSprName (PhysicsSpriteState ac_a4JH ct_a4JI) String where
                 x1_aafa x2_aafb x3_aafc x4_aafd y1_aafg x6_aaff)
         (f_aaf9 x5_aafe)
 
-physicsSprite :: ( NodeBuilder t host m, Maskable a, Eq a
+physicsSprite :: ( BuilderBase t m, Maskable a, Eq a
                  , IsActuator ac, Eq ac
-                 , HasROPositionAttrib ac host
-                 , HasROAngleAttrib ac host )
+                 , HasROPositionAttrib ac m
+                 , HasROAngleAttrib ac m )
               => Space a -- space
               -> Event t SpaceStep
               -> EventSelector t (Const2 (Body a) (ShapeAttributes a))
-              -> DynStateT t (PhysicsSpriteState ac a) m (Event t a) -- collision events
+              -> DynStateT t (PhysicsSpriteState ac a) (NodeBuilder t m) (Event t a) -- collision events
 physicsSprite sp steps collisionsE = do
     ticks <- view frameTicks
     sDyn <- watch
