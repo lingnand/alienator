@@ -16,6 +16,7 @@ module Alienator.Actuator
   , AccelActuator(AccelActuator)
   , HasAccel(..)
   , Anchor(Anchor)
+  , anchorPos
   ) where
 
 import Data.Default
@@ -66,7 +67,7 @@ instance Monad m => Default (AnyActuator m) where
 instance {-# OVERLAPPING #-} Monad m => HasROPositionAttrib (AnyActuator m) m where
     roPosition = ROAttrib $ \(AnyActuator act) -> get act roPosition
 
-instance Monad m => HasROAngleAttrib (AnyActuator m) m where
+instance {-# OVERLAPPING #-} Monad m => HasROAngleAttrib (AnyActuator m) m where
     roAngle = ROAttrib $ \(AnyActuator act) -> get act roAngle
 
 instance IsActuator (AnyActuator m) where

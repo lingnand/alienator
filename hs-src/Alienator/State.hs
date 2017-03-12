@@ -27,7 +27,7 @@ import Diagrams.TwoD.Shapes
 import Linear
 import Linear.Affine
 import Control.Lens
-import qualified Alienator.Pool as P
+import qualified Data.Pool as P
 import Alienator.PhysicsSprite
 import Alienator.Actuator
 import Alienator.Constants
@@ -122,19 +122,21 @@ initPlayerShipState winSize = PlayerShipState
                      & enabled      .~ True
     }
   where playerStartPos = 0 .+^ (winSize & _x .~ 200
-                                      & _y //~ 2)
+                                        & _y //~ 2)
         playerShipContour = 140^&40
 
-initBulletPool :: Monad m => P.Pool (BulletState m)
-initBulletPool = P.fromList $ replicate 25 def
+-- we want to start with a pool of some capacity but WITHOUT any slots
+-- taken
+initBulletPool :: P.Pool (BulletState m)
+initBulletPool = P.idling 25
 
-initGamePlaySceneState :: Monad m
-                   => V2 Float -- ^ Win size
-                   -> GamePlaySceneState m
+initGamePlaySceneState ::
+  V2 Float -- ^ Win size
+  -> GamePlaySceneState m
 initGamePlaySceneState winSize = GamePlaySceneState
     { _bulletPool = initBulletPool
     , _playerShip = initPlayerShipState winSize
-    , _enemyShipPool = P.fromList $ replicate 10 def
+    , _enemyShipPool = P.idling 10
     }
 
 -- | create a standard round bullet PSpriteState with the initial position, velocity and

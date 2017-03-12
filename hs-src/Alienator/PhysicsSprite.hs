@@ -1,6 +1,5 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
@@ -21,6 +20,7 @@ import Data.Default
 import Data.Functor.Misc
 import Control.Lens
 import Control.Monad
+import Control.Monad.Trans
 import Reflex
 import Reflex.State
 import Reflex.Cocos2d
@@ -150,16 +150,26 @@ instance HasSprName (PhysicsSpriteState ac_a4JH ct_a4JI) String where
                 x1_aafa x2_aafb x3_aafc x4_aafd y1_aafg x6_aaff)
         (f_aaf9 x5_aafe)
 
-physicsSprite :: ( BuilderBase t m, Maskable a, Eq a
+physicsSprite :: ( Maskable a, Eq a
                  , IsActuator ac, Eq ac
-                 , HasROPositionAttrib ac m
-                 , HasROAngleAttrib ac m )
+                 , NodeBuilder t m
+                 , MonadFinalize m
+                 , MonadIO (Finalizable m)
+                 , MonadIO m
+                 , PostBuild t m
+                 , PerformEvent t m
+                 , HasROPositionAttrib ac (Performable m)
+                 , HasROAngleAttrib ac (Performable m)
+                 , MonadIO (Performable m)
+                 , MonadSample t m
+                 , MonadDynState t (PhysicsSpriteState ac a) m
+                 )
               => Space a -- space
               -> Event t SpaceStep
               -> EventSelector t (Const2 (Body a) (ShapeAttributes a))
-              -> DynStateT t (PhysicsSpriteState ac a) (NodeBuilder t m) (Event t a) -- collision events
+              -> m (Event t a) -- collision events
 physicsSprite sp steps collisionsE = do
-    ticks <- view frameTicks
+    ticks <- getFrameTicks
     sDyn <- watch
     let enabledDyn = view enabled <$> sDyn
         enabledBeh = current enabledDyn

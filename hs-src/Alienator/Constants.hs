@@ -4,7 +4,7 @@ module Alienator.Constants
     CollisionCategory(..)
   ) where
 
-import Reflex.Cocos2d.Chipmunk
+import Reflex.Cocos2d.Misc.Chipmunk
 
 data CollisionCategory =
       Wall
