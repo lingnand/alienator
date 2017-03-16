@@ -1,5 +1,4 @@
 {-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 module Alienator.Main
   (
     main
@@ -8,6 +7,7 @@ module Alienator.Main
 import Control.Monad
 import Control.Monad.Trans
 import Control.Lens hiding ((#))
+import Reflex
 import Reflex.Cocos2d
 import Reflex.State
 
@@ -24,23 +24,12 @@ data Scene = StartScene | GamePlayScene | GameOverScene deriving (Show, Read, Eq
 
 main :: IO ()
 main = mainScene $ do
-    winSize <- view windowSize
+    winSize <- getWindowSize
     let midPoint = P (winSize/2)
     keysDyn <- getKeyboardEvents >>= accumKeysDown
 
-    (sp, steps) <- space [ iterations := 2 ]
-    collisionEvts <- getCollisionEvents sp
-    let collisionsE = fanCollisionsByBody (collisionEvts^.collisionBegan)
-    -- walls
-    wb <- body sp [ position := midPoint ]
-    let rectPts = uncurry rect $ unr2 (winSize + 100)
-    forM_ (zip rectPts $ tail $ cycle rectPts) $ \(a, b) ->
-      void $ shape sp wb (LineSegment a b 100)
-        [ active   := True
-        , category := Wall
-        ]
-    void $ runAccStateT ?? StartScene $ do
-      seqDyn' <=< watches $ \case
+    evalAccStateT ?? StartScene $ do
+      runDyn <- watches $ \case
         StartScene -> do
           (_, clicked) <- button
             [ titleText       := "Start"
@@ -50,7 +39,18 @@ main = mainScene $ do
           adjust $ const GamePlayScene <$ clicked
         GamePlayScene -> do
           liftIO $ putStrLn "playing game!"
-          overE <- lift . flip evalAccStateT (initGamePlaySceneState winSize) $ do
+          (sp, steps) <- space [ iterations := 2 ]
+          collisionEvts <- getCollisionEvents sp
+          let collisionsE = fanCollisionsByBody (collisionEvts^.collisionBegan)
+          -- walls
+          wb <- body sp [ position := midPoint ]
+          let rectPts = uncurry rect $ unr2 (winSize + 100)
+          forM_ (zip rectPts $ tail $ cycle rectPts) $ \(a, b) ->
+            void $ shape sp wb (LineSegment a b 100)
+              [ active   := True
+              , category := Wall
+              ]
+          overE <- lift . flip evalAccStateT (initGamePlaySceneState winSize) $
             gamePlayScene winSize sp steps collisionsE keysDyn
           adjust $ const GameOverScene <$ overE
         GameOverScene -> do
@@ -60,3 +60,5 @@ main = mainScene $ do
             , position        := midPoint
             ]
           adjust $ const StartScene <$ clicked
+      currentRun <- sample (current runDyn)
+      void $ runWithReplace currentRun (updated runDyn)

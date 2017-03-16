@@ -22,5 +22,5 @@ OTHER_LDFLAGS = -liconv
 // OTHER_LDFLAGS = -liconv -w
 
 // Configure this to match your installed GHC
-HEADER_SEARCH_PATHS = $(inherited) /usr/local/lib/ghc-8.0.1/include
+HEADER_SEARCH_PATHS = $(inherited) /Users/lingnan/.stack/programs/x86_64-osx/ghc-8.0.2/lib/ghc-8.0.2/include
 

@@ -8,7 +8,6 @@ module Alienator.GamePlayScene
   ) where
 
 import qualified Data.Set as S
-import Data.Maybe
 import Data.Default
 import Data.Colour.Names
 import Data.Colour
@@ -19,7 +18,6 @@ import Diagrams ((^&), (@@), deg, unr2)
 import Diagrams.TwoD.Vector (e)
 import Diagrams.TwoD.Shapes
 import Control.Lens
-import Control.Applicative
 import Control.Monad
 import Control.Monad.Fix
 import Control.Monad.Trans
@@ -59,7 +57,7 @@ getRandomV2 (V2 fx fy, V2 tx ty) =
 
 
 buildDiffs ::
-  (MonadDynState t (P.Pool a) m, MonadSample t m, MonadAccum t m)
+  (Eq a, MonadDynState t (P.Pool a) m, MonadSample t m, MonadAccum t m)
   => (P.Id -> Dynamic t (Maybe a) -> m b) -> m ([b], Event t [b])
 buildDiffs onDiff = do
     slotsDyn <- watches P.slots
@@ -70,7 +68,7 @@ buildDiffs onDiff = do
                                , not (IS.null diff) = Just diff
                                | otherwise          = Nothing
         processNewPids = flip IS.foldr (pure []) $ \pid ->
-          liftM2 (:) (onDiff pid (join . IM.lookup pid <$> slotsDyn))
+          liftM2 (:) (onDiff pid (uniqDyn $ join . IM.lookup pid <$> slotsDyn))
     pids <- sample (current pidsDyn)
     runWithAccumulation (processNewPids pids) $ processNewPids <$> newPidsE
 
@@ -96,7 +94,7 @@ gamePlayScene ::
   -> Event t SpaceStep
   -> EventSelector t (Const2 (Body CollisionCategory) (ShapeAttributes CollisionCategory))
   -> Dynamic t (S.Set KeyCode)    -- ^ keys down
-  -> DynStateT t (GamePlaySceneState m) m (Event t ()) -- ^ return when game is over
+  -> DynStateT t (GamePlaySceneState (Performable m)) m (Event t ()) -- ^ return when game is over
 gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
     ticks <- lift getFrameTicks
     let bulletBaseAccel :: Float = 10.0
@@ -165,14 +163,14 @@ gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
                          ]
 
         -- rendering
-        (bulletPoolModEsZ, bulletPoolModEEs)  <- buildDiffs $ \pid slotDyn -> do
+        (bulletPoolModEsZ, bulletPoolModEEs) <- buildDiffs $ \pid slotDyn -> do
           let -- profileSignalDyn is a valid profile (enabled = true) when someone takes a slot;
               -- and invalid when slotDyn is Nothing (because enabled = false in def)
-              profileSignalDyn = fromMaybe def <$> slotDyn
-          startProfile <- sample (current profileSignalDyn)
+              profileModDyn = maybe (enabled .~ False) const <$> slotDyn
+          startProfile <- ($ def) <$> sample (current profileModDyn)
           flip evalAccStateT startProfile $ do
             -- insert profileSignals into the stream
-            adjust $ const <$> updated profileSignalDyn
+            adjust $ updated profileModDyn
             hits <- physicsSprite sp steps collisionsE
 
             -- when we are being hit by these things, we release the slot
@@ -219,11 +217,11 @@ gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
         -- apply the adjusts by enemies
         adjust enemiesBulletPoolModE
 
-        buildDiffs $ \pid slotDyn -> do
-          let profileSignalDyn = fromMaybe def <$> slotDyn
-          startProfile <- sample (current profileSignalDyn)
+        void . buildDiffs $ \pid slotDyn -> do
+          let profileModDyn = maybe (enabled .~ False) const <$> slotDyn
+          startProfile <- ($ def) <$> sample (current profileModDyn)
           flip evalAccStateT startProfile $ do
-            adjust $ const <$> updated profileSignalDyn
+            adjust $ updated profileModDyn
             hits <- physicsSprite sp steps collisionsE
             -- once hit the wall/ship/etc., anchor them and deactivate
             cTypeBeh <- refine current $ watches (^.sCategory)
@@ -246,4 +244,4 @@ gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
         adjust $ P.takeSlots_ . playerBulletsGen <$> tag playerPosBeh playerBulletFireE
 
 
-    waitEvent $ void $ ffilter (<=0) $ (^.health.meterRead) <$> updated playerDyn
+    waitEvent $ void $ ffilter (<=90) $ (^.health.meterRead) <$> updated playerDyn
