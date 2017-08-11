@@ -1,5 +1,5 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
-module Main
+module Alienator
     ( runAlienator
     )
   where
