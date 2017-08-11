@@ -10,55 +10,58 @@ import Control.Lens hiding ((#))
 import Reflex
 import Reflex.Cocos2d
 import Reflex.State
+import Reflex.Extra
 
 import Linear.Affine
-import Diagrams (unr2)
+import Diagrams (unr2, V2(..))
 import Diagrams.TwoD.Shapes
+import Control.Monad.Trans.Free
 
 import Alienator.GamePlayScene
 import Alienator.State
 import Alienator.Constants
 
-
 data Scene = StartScene | GamePlayScene | GameOverScene deriving (Show, Read, Eq)
+
+renderScene :: V2 Float -> Scene -> FreeT (Event Spider) SpiderNodeBuilder ()
+renderScene winSize StartScene = do
+  (_, clicked) <- lift $ button
+    [ titleText       := "Start"
+    , titleFontSize   := 20
+    , position        := P (winSize/2)
+    ]
+  waitEvent_ clicked
+  renderScene winSize GamePlayScene
+renderScene winSize GamePlayScene = do
+  keysDyn <- lift $ getKeyboardEvents >>= accumKeysDown
+  waitEvent_ <=< lift $ do
+    liftIO $ putStrLn "playing game!"
+    (sp, steps) <- space [ iterations := 2 ]
+    collisionEvts <- getCollisionEvents sp
+    let collisionsE = fanCollisionsByBody (collisionEvts^.collisionBegan)
+    -- walls
+    liftIO $ putStrLn "putting up walls"
+    wb <- body sp [ position := P (winSize/2) ]
+    let rectPts = uncurry rect $ unr2 (winSize + 100)
+    forM_ (zip rectPts $ tail $ cycle rectPts) $ \(a, b) ->
+      void $ shape sp wb (LineSegment a b 100)
+        [ active   := True
+        , category := Wall
+        ]
+    liftIO $ putStrLn "putting up scene"
+    flip evalAccStateT (initGamePlaySceneState winSize) $
+      gamePlayScene winSize sp steps collisionsE keysDyn
+  renderScene winSize GameOverScene
+renderScene winSize GameOverScene = do
+  (_, clicked) <- lift $ button
+    [ titleText       := "Game Over"
+    , titleFontSize   := 50
+    , position        := P (winSize/2)
+    ]
+  waitEvent_ clicked
+  renderScene winSize StartScene
 
 main :: IO ()
 main = mainScene $ do
     winSize <- getWindowSize
-    let midPoint = P (winSize/2)
-    keysDyn <- getKeyboardEvents >>= accumKeysDown
-
-    evalAccStateT ?? StartScene $ do
-      runDyn <- watches $ \case
-        StartScene -> do
-          (_, clicked) <- button
-            [ titleText       := "Start"
-            , titleFontSize   := 20
-            , position        := midPoint
-            ]
-          adjust $ const GamePlayScene <$ clicked
-        GamePlayScene -> do
-          liftIO $ putStrLn "playing game!"
-          (sp, steps) <- space [ iterations := 2 ]
-          collisionEvts <- getCollisionEvents sp
-          let collisionsE = fanCollisionsByBody (collisionEvts^.collisionBegan)
-          -- walls
-          wb <- body sp [ position := midPoint ]
-          let rectPts = uncurry rect $ unr2 (winSize + 100)
-          forM_ (zip rectPts $ tail $ cycle rectPts) $ \(a, b) ->
-            void $ shape sp wb (LineSegment a b 100)
-              [ active   := True
-              , category := Wall
-              ]
-          overE <- lift . flip evalAccStateT (initGamePlaySceneState winSize) $
-            gamePlayScene winSize sp steps collisionsE keysDyn
-          adjust $ const GameOverScene <$ overE
-        GameOverScene -> do
-          (_, clicked) <- button
-            [ titleText       := "Game Over"
-            , titleFontSize   := 50
-            , position        := midPoint
-            ]
-          adjust $ const StartScene <$ clicked
-      currentRun <- sample (current runDyn)
-      void $ runWithReplace currentRun (updated runDyn)
+    void . runWithReplaceFree $ renderScene winSize StartScene
