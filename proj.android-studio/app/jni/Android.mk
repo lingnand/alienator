@@ -22,11 +22,21 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../../include/ghc-7.10.2
 
 
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
+LOCAL_SHARED_LIBRARIES := haskell_shared
 
 # _COCOS_LIB_ANDROID_BEGIN
 # _COCOS_LIB_ANDROID_END
 
 include $(BUILD_SHARED_LIBRARY)
+
+#================================
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := haskell_shared
+LOCAL_SRC_FILES := libhaskell.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+#================================
 
 $(call import-module,./prebuilt-mk)
 

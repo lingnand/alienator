@@ -285,6 +285,8 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
             ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             String libName = bundle.getString("android.app.lib_name");
+            // load the haskell library
+            System.loadLibrary("haskell");
             System.loadLibrary(libName);
         } catch (Exception e) {
             e.printStackTrace();
