@@ -13,3 +13,8 @@ cabal.sandbox.config
 /bin/
 *.mp4
 .DS_Store
+*.o.d
+/proj.android-studio/**/build/
+/proj.android-studio/.idea/workspace.xml
+/proj.android-studio/.idea/libraries
+/proj.android-studio/local.properties

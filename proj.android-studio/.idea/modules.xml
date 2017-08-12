@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/Developer/projs/Alienator/proj.android-studio/app/app.iml" filepath="$USER_HOME$/Developer/projs/Alienator/proj.android-studio/app/app.iml" />
+      <module fileurl="file://$USER_HOME$/Developer/projs/Alienator/proj.android-studio/Applications/Cocos/frameworks/cocos2d-x-3.9/cocos/platform/android/libcocos2dx/libcocos2dx.iml" filepath="$USER_HOME$/Developer/projs/Alienator/proj.android-studio/Applications/Cocos/frameworks/cocos2d-x-3.9/cocos/platform/android/libcocos2dx/libcocos2dx.iml" />
+      <module fileurl="file://$USER_HOME$/Developer/projs/Alienator/proj.android-studio/proj.android-studio.iml" filepath="$USER_HOME$/Developer/projs/Alienator/proj.android-studio/proj.android-studio.iml" />
+    </modules>
+  </component>
+</project>

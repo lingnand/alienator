@@ -47,7 +47,7 @@
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
-		AEDF2DEE1DBE957B0062C4F4 /* Haskell.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AEDF2DED1DBE957B0062C4F4 /* Haskell.xcconfig */; };
+		AE1A24511F3F97F7000F7EEF /* Haskell-desktop.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */; };
 		AEDF2DF21DBE98160062C4F4 /* Alienator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDF2DF11DBE98160062C4F4 /* Alienator.a */; };
 		AEDF2DF41DBE98C50062C4F4 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDF2DF31DBE98C50062C4F4 /* libgmp.a */; };
 		B41F41C0B96371BB9588626F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 55014BDBA322584F88CF3D18 /* res */; };
@@ -111,7 +111,7 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		55014BDBA322584F88CF3D18 /* res */ = {isa = PBXFileReference; lastKnownFileType = "?"; name = res; path = ../Resources/res; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		AEDF2DED1DBE957B0062C4F4 /* Haskell.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Haskell.xcconfig; path = ../Haskell.xcconfig; sourceTree = "<group>"; };
+		AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Haskell-desktop.xcconfig"; sourceTree = "<group>"; };
 		AEDF2DF11DBE98160062C4F4 /* Alienator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = Alienator.a; path = ../Alienator.a; sourceTree = "<group>"; };
 		AEDF2DF31DBE98C50062C4F4 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgmp.a; path = ../../../../../../usr/local/Cellar/gmp/6.1.1/lib/libgmp.a; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -197,7 +197,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				AEDF2DED1DBE957B0062C4F4 /* Haskell.xcconfig */,
+				AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */,
 				46880B8319C43A87006E1F66 /* Classes */,
 				46880B7519C43A67006E1F66 /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -416,8 +416,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEDF2DEE1DBE957B0062C4F4 /* Haskell.xcconfig in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
+				AE1A24511F3F97F7000F7EEF /* Haskell-desktop.xcconfig in Resources */,
 				B41F41C0B96371BB9588626F /* res in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,7 +522,7 @@
 		};
 		5087E76D17EB910900C73F5D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEDF2DED1DBE957B0062C4F4 /* Haskell.xcconfig */;
+			baseConfigurationReference = AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -559,7 +559,7 @@
 		};
 		5087E76E17EB910900C73F5D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEDF2DED1DBE957B0062C4F4 /* Haskell.xcconfig */;
+			baseConfigurationReference = AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
