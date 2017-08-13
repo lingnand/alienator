@@ -20,7 +20,7 @@ executable Alienator.so
   -- other-modules:       
   -- other-extensions:    
   hs-source-dirs:      hs-src
-  main-is:             Main.hs
+  main-is:             Alienator.hs
   build-depends:       base >=4.8 && <5
                      , colour
                      , containers
