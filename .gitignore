@@ -18,3 +18,4 @@ cabal.sandbox.config
 /proj.android-studio/.idea/workspace.xml
 /proj.android-studio/.idea/libraries
 /proj.android-studio/local.properties
+/proj.android-studio/.gradle/

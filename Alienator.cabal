@@ -15,7 +15,7 @@ build-type:          Simple
 extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
-executable Alienator.so
+executable libhaskell.so
   -- exposed-modules:     
   -- other-modules:       
   -- other-extensions:    
@@ -36,9 +36,12 @@ executable Alienator.so
                      , linear
                      , random
                      , MonadRandom
-  -- ghc-options:         -Wall -threaded -stubdir Classes -o Alienator -staticlib -pgmlibtool libtool-quiet
-  --                      -fno-warn-name-shadowing
-  ghc-options:         -fPIC -threaded -no-hs-main
-  cc-options:          -shared
-  ld-options:          -shared
+
+  -- ### stubdir controls where the stub file is put
+  ghc-options:         -Wall -threaded -stubdir Classes -fno-warn-name-shadowing
+  -- ### additional Mac options (to compile it as a single lib that exports the main haskell entry)
+  -- ghc-options: -o Alienator -staticlib -pgmlibtool libtool-quiet
+  -- ### additional android options
+                       -fPIC -no-hs-main
+  ld-options:          -shared -Wl,-soname,libhaskell.so
   default-language:    Haskell2010

@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "Main_stub.h"
+#include "Alienator_stub.h"
 #include "HsFFI.h"
 
 USING_NS_CC;
