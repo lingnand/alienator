@@ -47,8 +47,8 @@
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
-		AE1A24511F3F97F7000F7EEF /* Haskell-desktop.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */; };
-		AEDF2DF21DBE98160062C4F4 /* Alienator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDF2DF11DBE98160062C4F4 /* Alienator.a */; };
+		AE1A24511F3F97F7000F7EEF /* Haskell-mac.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = AE1A24501F3F97F7000F7EEF /* Haskell-mac.xcconfig */; };
+		AE1A24531F4B9880000F7EEF /* libhaskell.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1A24521F4B9880000F7EEF /* libhaskell.a */; };
 		AEDF2DF41DBE98C50062C4F4 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDF2DF31DBE98C50062C4F4 /* libgmp.a */; };
 		B41F41C0B96371BB9588626F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 55014BDBA322584F88CF3D18 /* res */; };
 		B65B4F94A3BF1EC5CB00022A /* res in Resources */ = {isa = PBXBuildFile; fileRef = 55014BDBA322584F88CF3D18 /* res */; };
@@ -111,8 +111,8 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		55014BDBA322584F88CF3D18 /* res */ = {isa = PBXFileReference; lastKnownFileType = "?"; name = res; path = ../Resources/res; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Haskell-desktop.xcconfig"; sourceTree = "<group>"; };
-		AEDF2DF11DBE98160062C4F4 /* Alienator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = Alienator.a; path = ../Alienator.a; sourceTree = "<group>"; };
+		AE1A24501F3F97F7000F7EEF /* Haskell-mac.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Haskell-mac.xcconfig"; sourceTree = "<group>"; };
+		AE1A24521F4B9880000F7EEF /* libhaskell.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhaskell.a; path = mac/libs/libhaskell.a; sourceTree = "<group>"; };
 		AEDF2DF31DBE98C50062C4F4 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgmp.a; path = ../../../../../../usr/local/Cellar/gmp/6.1.1/lib/libgmp.a; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -159,10 +159,10 @@
 				5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */,
 				5087E76817EB910900C73F5D /* QuartzCore.framework in Frameworks */,
 				AEDF2DF41DBE98C50062C4F4 /* libgmp.a in Frameworks */,
-				AEDF2DF21DBE98160062C4F4 /* Alienator.a in Frameworks */,
 				5087E76917EB910900C73F5D /* OpenAL.framework in Frameworks */,
 				5087E76A17EB910900C73F5D /* AVFoundation.framework in Frameworks */,
 				5087E76B17EB910900C73F5D /* AudioToolbox.framework in Frameworks */,
+				AE1A24531F4B9880000F7EEF /* libhaskell.a in Frameworks */,
 				C1304BE0A531567F64D85B7A /* libcocos2d Mac.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,7 +197,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */,
+				AE1A24501F3F97F7000F7EEF /* Haskell-mac.xcconfig */,
 				46880B8319C43A87006E1F66 /* Classes */,
 				46880B7519C43A67006E1F66 /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -305,7 +305,7 @@
 		7722448299D115D24F40A470 /* mac-libs */ = {
 			isa = PBXGroup;
 			children = (
-				AEDF2DF11DBE98160062C4F4 /* Alienator.a */,
+				AE1A24521F4B9880000F7EEF /* libhaskell.a */,
 				AEDF2DF31DBE98C50062C4F4 /* libgmp.a */,
 				3D77407C86C4E7570AC0EFF9 /* libcocos2d Mac.a */,
 			);
@@ -417,7 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
-				AE1A24511F3F97F7000F7EEF /* Haskell-desktop.xcconfig in Resources */,
+				AE1A24511F3F97F7000F7EEF /* Haskell-mac.xcconfig in Resources */,
 				B41F41C0B96371BB9588626F /* res in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,7 +522,7 @@
 		};
 		5087E76D17EB910900C73F5D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */;
+			baseConfigurationReference = AE1A24501F3F97F7000F7EEF /* Haskell-mac.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -548,6 +548,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"/Applications/Cocos/frameworks/cocos2d-x-3.9/prebuilt/mac",
 					/usr/local/Cellar/gmp/6.1.1/lib,
+					"$(PROJECT_DIR)/mac/libs",
 				);
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
@@ -559,7 +560,7 @@
 		};
 		5087E76E17EB910900C73F5D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE1A24501F3F97F7000F7EEF /* Haskell-desktop.xcconfig */;
+			baseConfigurationReference = AE1A24501F3F97F7000F7EEF /* Haskell-mac.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -583,6 +584,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"/Applications/Cocos/frameworks/cocos2d-x-3.9/prebuilt/mac",
 					/usr/local/Cellar/gmp/6.1.1/lib,
+					"$(PROJECT_DIR)/mac/libs",
 				);
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
