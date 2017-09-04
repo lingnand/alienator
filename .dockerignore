@@ -1,0 +1,9 @@
+# ignore files except those haskell related
+*
+!hs-src
+!*.cabal
+!Makefile
+!Dockerfile*
+!*.hs
+# the dist directory is like cabal's cache and can speed up build
+!dist
