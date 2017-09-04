@@ -10,6 +10,7 @@ dist-*
 cabal.sandbox.config
 .stack-work/
 *.a
+*.so
 /bin/
 *.mp4
 .DS_Store
