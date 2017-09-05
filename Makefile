@@ -2,7 +2,7 @@ ifndef TARGET
 $(error TARGET is not set; should be one of [mac, android])
 endif
 
-.PHONY: configure build clean newbuild
+.PHONY: configure build debug clean newbuild
 
 newbuild: clean configure build
 
@@ -33,6 +33,9 @@ build:
 	docker run --rm -v `pwd`:/target nix-cross-android build && \
 	cp -v libhaskell.so proj.android-studio/app/jni/ && \
 	mv -v libhaskell.so proj.android-studio/app/libs/armeabi/
+debug: build
+	cd proj.android-studio && ./gradlew openDebug && \
+	adb shell ps | grep -m1 'org\.cocos' | awk '{ print $$2 }' | xargs adb logcat --pid
 clean:
 	cabal clean; docker rmi nix-cross-android 2>/dev/null || true
 

@@ -43,6 +43,18 @@ android {
             }
         }
     }
+
+
+    applicationVariants.all { variant ->
+        task "open${variant.name.capitalize()}" {
+            dependsOn "install${variant.name.capitalize()}"
+            doLast {
+                exec {
+                    commandLine "adb shell monkey -p ${variant.applicationId} -c android.intent.category.LAUNCHER 1".split(" ")
+                }
+            }
+        }
+    }
 }
 
 dependencies {
