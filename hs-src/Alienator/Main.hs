@@ -35,12 +35,12 @@ renderScene winSize StartScene = do
 renderScene winSize GamePlayScene = do
   keysDyn <- lift $ getKeyboardEvents >>= accumKeysDown
   waitEvent_ <=< lift $ do
-    liftIO $ putStrLn "playing game!"
+    debug "playing game!"
     (sp, steps) <- space [ iterations := 2 ]
     collisionEvts <- getCollisionEvents sp
     let collisionsE = fanCollisionsByBody (collisionEvts^.collisionBegan)
     -- walls
-    liftIO $ putStrLn "putting up walls"
+    debug "putting up walls"
     wb <- body sp [ position := P (winSize/2) ]
     let rectPts = uncurry rect $ unr2 (winSize + 100)
     forM_ (zip rectPts $ tail $ cycle rectPts) $ \(a, b) ->
@@ -48,7 +48,7 @@ renderScene winSize GamePlayScene = do
         [ active   := True
         , category := Wall
         ]
-    liftIO $ putStrLn "putting up scene"
+    debug "putting up scene"
     flip evalAccStateT (initGamePlaySceneState winSize) $
       gamePlayScene winSize sp steps collisionsE keysDyn
   renderScene winSize GameOverScene

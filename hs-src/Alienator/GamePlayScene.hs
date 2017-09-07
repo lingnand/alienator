@@ -103,7 +103,7 @@ gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
         enemyBaseVel :: Float = playerBaseVel*1.5
         enemyShipContour :: V2 Float = 130^&80
 
-    liftIO $ putStrLn "preparing to load textures"
+    debug "preparing to load textures"
     finishes <- lift . mapM loadTexture $
       [ "res/img/enemy" ++ show i ++ ".png"
       | i <- [0..3] :: [Int]
@@ -113,7 +113,7 @@ gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
       , "res/img/player.png" ]
     waitDynMaybe_ . distributeListOverDynWith sequence_ =<< lift (mapM dynMaybe finishes)
 
-    liftIO $ putStrLn "loading finished"
+    debug "loading finished"
     -- fps ticks
     [ fpsD8, fps1, fps2, fps5 ] <- lift $ mapM (`modulate` ticks) [0.8, 1, 2, 5]
 
@@ -121,7 +121,7 @@ gamePlayScene winSize sp steps collisionsE keysDyn = runWithReplaceFree $ do
     playerDyn <- lift . zoomAcc playerShip $ do
       playerHits <- zoomAcc pSprite $ do
         hits <- physicsSprite sp steps collisionsE
-        performEvent_ . ffor hits $ \ct -> liftIO . putStrLn $ "Player got hit with " ++ show ct
+        performEvent_ . ffor hits $ \ct -> debug $ "Player got hit with " ++ show ct
         adjust $ ffor (updated keysDyn) $
           \ks -> actuator.vel .~ playerBaseVel *^ foldr ((+) . keyToUnitV) 0 ks
         return hits
