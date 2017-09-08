@@ -35,6 +35,7 @@ build:
 	docker run --rm -v `pwd`:/target nix-cross-android build
 debug: build
 	cd proj.android-studio && ./gradlew openDebug && \
+	sleep 0.5 && \
 	adb shell ps | grep -m1 'org\.cocos' | awk '{ print $$2 }' | xargs adb logcat --pid
 clean:
 	cabal clean; docker rmi nix-cross-android 2>/dev/null || true
