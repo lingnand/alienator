@@ -17,7 +17,9 @@ configure:
 build:
 	cabal -v build && \
 	cp -rv dist /target/ && \
-	cp -v dist/build/libhaskell/libhaskell /target/libhaskell.so && \
+	mv -v dist/build/libhaskell/libhaskell proj.android-studio/app/jni/libhaskell.so && \
+	ndk-build -C proj.android-studio/app NDK_MODULE_PATH=$$(eval "echo $$(jq -r '.ndk_module_path | join(":")' proj.android-studio/build-cfg.json)") NDK_TOOLCHAIN_VERSION=4.9 NDK_DEBUG=1 && \
+	cp -v proj.android-studio/app/libs/armeabi/*.so /target/proj.android-studio/app/libs/armeabi/ && \
   { [ -d Classes ] && cp -rv Classes/* /target/Classes/ || true; }
 clean:
 	cabal clean
@@ -30,9 +32,7 @@ configure:
 	docker run --rm -v `pwd`:/target nix-cross-android configure
 build:
 	docker build -t nix-cross-android -f Dockerfile.nix-cross-android . && \
-	docker run --rm -v `pwd`:/target nix-cross-android build && \
-	cp -v libhaskell.so proj.android-studio/app/jni/ && \
-	mv -v libhaskell.so proj.android-studio/app/libs/armeabi/
+	docker run --rm -v `pwd`:/target nix-cross-android build
 debug: build
 	cd proj.android-studio && ./gradlew openDebug && \
 	adb shell ps | grep -m1 'org\.cocos' | awk '{ print $$2 }' | xargs adb logcat --pid

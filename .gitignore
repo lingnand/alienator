@@ -21,3 +21,4 @@ cabal.sandbox.config
 /proj.android-studio/local.properties
 /proj.android-studio/.gradle/
 /proj.android-studio/**/*.iml
+/proj.android-studio/**/gdb.setup
